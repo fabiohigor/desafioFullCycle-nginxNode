@@ -23,8 +23,10 @@ services:
       context: node
     tty: true
     container_name: app
-    entrypoint: dockerize -wait tcp://db:3306 -timeout 190s -wait-retry-interval 5s docker-entrypoint.sh
-    command: node index.js
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 190s -wait-retry-interval 5s sh -c "npm install && node index.js"
+    volumes: 
+      - ./node/app:/usr/src/app
+      # - /usr/src/app/node_modules #volume anonimo (link simbolico)
     ports:
       - "3000:3000"
     networks:
